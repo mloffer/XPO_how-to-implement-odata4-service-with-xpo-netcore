@@ -4,19 +4,30 @@ using DevExpress.Xpo;
 using Microsoft.AspNet.OData;
 using Microsoft.AspNet.OData.Routing;
 using Microsoft.AspNetCore.Mvc;
+using NHibernate;
 using ODataService.Helpers;
 using ODataService.Models;
+using ODataService.NHibernate;
 
 namespace ODataService.Controllers {
     public class OrderController : ODataController {
 
         private UnitOfWork Session;
-        public OrderController(UnitOfWork uow) {
+        private readonly ISession NSession;
+        public OrderController(UnitOfWork uow, ISession nSession) {
             this.Session = uow;
+            this.NSession = nSession;
         }
 
         [EnableQuery]
         public IQueryable<Order> Get() {
+            Console.WriteLine("--- begin sql execution ---");
+            var ntest = NSession.Query<NOrderDetail>()
+                .GroupBy(x => new { OrderId = x.Order.Id, ProductId = x.Product.Id }) // this works fine
+                .GroupBy(x => x.Key.ProductId) // exception: "A recognition error occurred"
+                .ToList();
+            Console.WriteLine("--- end sql execution ---");
+
             return Session.Query<Order>();
         }
 

@@ -18,7 +18,6 @@
     },
     "ODataService": {
       "commandName": "Project",
-      "launchBrowser": true,
       "launchUrl": "https://localhost:5001/odata",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ODataService.Helpers;
 using ODataService.Models;
+using ODataService.NHibernate;
 
 namespace ODataService
 {
@@ -40,6 +41,8 @@ namespace ODataService
                 options.UseConnectionString(Configuration.GetConnectionString("MSSqlServer"))
                 .UseAutoCreationOption(AutoCreateOption.DatabaseAndSchema) // debug only
                 .UseEntityTypes(ConnectionHelper.GetPersistentTypes()));
+
+            services.AddNHibernate(Configuration.GetConnectionString("NHibernateSqlServer"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
