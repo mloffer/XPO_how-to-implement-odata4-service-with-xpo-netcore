@@ -10,7 +10,6 @@ namespace ODataService.NHibernate
         public virtual int Id { get; set; }
         public virtual OrderStatus OrderStatus { get; set; }
         public virtual IList<NOrderDetail> OrderDetails { get; set; }
-        public virtual NCustomer Customer { get; set; }
     }
 
     public class NOrderMap : ClassMapping<NOrder>
@@ -26,7 +25,7 @@ namespace ODataService.NHibernate
 
             Bag(x => x.OrderDetails, map =>
             {
-                map.Key(k => k.Column("OrderDetailID"));
+                map.Key(k => k.Column("OrderID"));
             }, action => action.OneToMany());
 
             Table("Orders");

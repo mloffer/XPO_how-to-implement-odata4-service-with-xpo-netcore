@@ -4,6 +4,7 @@ using DevExpress.Xpo.Metadata;
 using Microsoft.AspNet.OData.Builder;
 using Microsoft.OData.Edm;
 using ODataService.Helpers;
+using ODataService.NHibernate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,6 +43,12 @@ namespace ODataService.Models {
             orderDetails.EntityType.HasKey(t => t.OrderDetailID);
             orders.EntityType.DerivesFrom<BaseDocument>();
             contracts.EntityType.DerivesFrom<BaseDocument>();*/
+
+            var orders = builder.EntitySet<NOrder>("NOrder");
+            orders.EntityType.HasMany(x => x.OrderDetails);
+
+            var orderDetails = builder.EntitySet<NOrderDetail>("NOrderDetail");
+            orderDetails.EntityType.HasRequired(x => x.Order);
 
             // Add actions and functions to EDM
 
